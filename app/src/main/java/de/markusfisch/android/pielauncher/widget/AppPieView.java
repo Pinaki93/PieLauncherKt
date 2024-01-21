@@ -217,10 +217,6 @@ public class AppPieView extends View {
 		invalidate();
 	}
 
-	public void keepMode() {
-		keepMode = true;
-	}
-
 	public boolean isEmpty() {
 		return appList == null || appList.size() < 1;
 	}
@@ -571,7 +567,8 @@ public class AppPieView extends View {
 					ripple.set(at.x, at.y);
 					invalidate();
 				};
-				postDelayed(rippleRunnable, tapTimeout);
+				// Delay touch feedback to not make it feel too sensitive.
+				postDelayed(rippleRunnable, longPressTimeout >> 1);
 			}
 
 			private boolean isTap(MotionEvent event, long timeOut) {
@@ -805,7 +802,7 @@ public class AppPieView extends View {
 			return true;
 		} else if (contains(iconCenterRect, touch) &&
 				grabbedIcon == null) {
-			keepMode();
+			keepMode = true;
 			SettingsActivity.start(context);
 			return true;
 		} else if (contains(iconEndRect, touch)) {
